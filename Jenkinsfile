@@ -10,6 +10,12 @@ pipeline {
     }
 
     stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+        
         stage('Checkout') {
             steps {
                 git 'https://github.com/ygminds73/eks-cluster-deployment.git'
