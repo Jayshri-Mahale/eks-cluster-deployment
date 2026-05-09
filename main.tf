@@ -6,6 +6,7 @@ data "aws_subnets" "available-subnets" {
     name   = "vpc-id"
     values = [data.aws_vpc.main.id]
   }
+}
 #data "aws_subnets" "available-subnets"{
 #    filter {
 #        name = "tag:Name"
