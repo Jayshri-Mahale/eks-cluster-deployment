@@ -1,9 +1,17 @@
-data "aws_subnets" "available-subnets"{
-    filter {
-        name = "tag:Name"
-        values = ["Our-Public-*"]
-    }
+data "aws_vpc" "main" {
+  id = "vpc-0132fb27ea1e38bea"
 }
+data "aws_subnets" "available-subnets" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.main.id]
+  }
+#data "aws_subnets" "available-subnets"{
+#    filter {
+#        name = "tag:Name"
+#        values = ["Our-Public-*"]
+#    }
+#}
 
 resource "aws_eks_cluster" "project-cluster" {
   name     = "project-cluster"
