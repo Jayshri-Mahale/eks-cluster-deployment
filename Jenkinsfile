@@ -15,10 +15,10 @@ pipeline {
                 cleanWs()
             }
         }
-        
+
         stage('Checkout') {
             steps {
-                git 'https://github.com/ygminds73/eks-cluster-deployment.git'
+                git 'https://github.com/Jayshri-Mahale/eks-cluster-deployment.git'
             }
         }
     
