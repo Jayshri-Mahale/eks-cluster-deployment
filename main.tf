@@ -38,6 +38,12 @@ output "kubeconfig-certificate-authority-data" {
   value = aws_eks_cluster.project-cluster.certificate_authority[0].data
 }
 
+resource "time_sleep" "wait_for_eks" {
+  depends_on = [aws_eks_cluster.project-cluster]
+
+  create_duration = "10m"
+}
+
 resource "aws_eks_node_group" "node-grp" {
   cluster_name    = aws_eks_cluster.project-cluster.name
   node_group_name = "pc-node-group"
@@ -46,7 +52,7 @@ resource "aws_eks_node_group" "node-grp" {
   capacity_type   = "ON_DEMAND"
   disk_size       = "20"
   instance_types  = ["c7i-flex.large"]
-  labels = tomap({ env = "dev" })
+  labels          = tomap({ env = "dev" })
 
   scaling_config {
     desired_size = 2
@@ -60,6 +66,7 @@ resource "aws_eks_node_group" "node-grp" {
   depends_on = [
     aws_iam_role_policy_attachment.AmazonEKSWorkerNodePolicy,
     aws_iam_role_policy_attachment.AmazonEKS_CNI_Policy,
-    aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly
-    ]  
+    aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly,
+    time_sleep.wait_for_eks
+  ]
 }
